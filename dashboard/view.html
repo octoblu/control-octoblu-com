@@ -10,9 +10,48 @@
 -->
 
 </div>
-<md-button ng-show="{{showClaim}}" class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{claimURL}}">Claim Device</md-button>
-<md-button ng-show="{{showClaim}}" class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{useURL}}">Go here to use!</md-button>
+<div ng-show="{{showClaim}}">
+<md-button  class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{claimURL}}">Claim Device</md-button>
+<md-button  class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{useURL}}">Go here to use!</md-button>
 
+<p>
+	<h2>Instructions</h2>
+
+	<ol>
+	<li>Click on "Claim Device" to attach it to an Octobu account</li>
+	<li>Click on "Go Here to Use"</li>
+	<li>Click "Edit" to enable dragging and editting of Widget Properties</li>
+	<li>Add your control device to a flow and attach a debug</li>
+	<li>Any action on a widget is sent as a message to Octoblu - you'll see it in the debug</li>
+	</ol>
+
+	<h3>Example output</h3>
+
+	<p><strong>Button</strong>
+	<code>
+	payload: {
+	    "name" : WIDGETNAME,
+	    "value": up / down
+	}
+	</code></p>
+
+	<p><strong>Switch</strong>
+	<code>
+	payload: {
+	    "name" : WIDGETNAME,
+	    "value": true / false
+	}
+	</code></p>
+
+	<p><strong>Slider</strong>
+	<code>
+	payload: {
+	    "name" : WIDGETNAME,
+	    "value": 0 - 255
+	}
+	</code></p>
+</p>
+</div>
 <div ng-show="{{!showClaim}}" gridster="gridsterOptions">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
