@@ -89,12 +89,12 @@ function($scope, $timeout) {
 		$scope.showClaim = true;
 		conn.on('ready', function(data){
 			console.log('Ready', data);
-			data.type = 'device:ui';
+			data.type = 'device:controlPanel';
 			data.discoverWhitelist = [data.uuid];
 			data.board = initialDash;
 			data.logo  = "https://s3-us-west-2.amazonaws.com/octoblu-icons/device/astral_plane.svg";
 			conn.update(data);
-			$scope.useURL   = "http://ui.octoblu.com/?uuid=" + data.uuid + "&token=" + data.token;
+			$scope.useURL   = "http://control.octoblu.com/?uuid=" + data.uuid + "&token=" + data.token;
 			$scope.claimURL = "https://app.octoblu.com/node-wizard/claim/" + data.uuid + "/" + data.token;
 			$scope.$apply();
 		});
