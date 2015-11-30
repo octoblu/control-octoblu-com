@@ -22,11 +22,12 @@ ul {
 }
 .box-header h3 {
     margin-top: 10px;
+    font-size: 16px;
     display: inline-block;
 }
 
 .box-content {
-    padding: 40px 15px 0px 0px;
+    padding: 20px 15px 0px 0px;
 }
 .box-header-btns {
     top: 15px;

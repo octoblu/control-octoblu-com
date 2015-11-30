@@ -36,13 +36,11 @@ function($scope, $timeout) {
 		$scope.sendMessage = function(name, value) {
 				var message = {
 					"devices": "*",
-					"payload": {
-						"from": name , "value": value
-					}
+					"payload": {"name": name, "value": value}
 				};
 				conn.message(message);
 				console.log(message);
-		}
+		};
 
 		$scope.saveBoard = function() {
 				conn.update({
