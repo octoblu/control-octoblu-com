@@ -4,11 +4,23 @@ angular.module('app')
 function($scope, $timeout) {
 	$scope.gridsterOptions = {
 		margins: [20, 20],
-		mobileBreakPoint: 300,
+		mobileBreakPoint: 500,
 		columns: 4,
 		draggable: {
 			handle: 'h3',
 			enabled: false
+		}
+	};
+
+	var MESSAGE_SCHEMA = {
+		"type": 'object',
+		"properties": {
+			"name": {
+				"type": "string"
+			},
+			"base64":{
+				"type": "string"
+			}
 		}
 	};
 
@@ -83,6 +95,21 @@ function($scope, $timeout) {
 				});
 				console.log($scope.dashboard);
 			}
+
+			conn.on('message', function(data){
+				console.log(data.payload.name);
+				if(data.payload.base64){
+					var canvas = document.getElementById(data.payload.name);
+					var context = canvas.getContext('2d');
+					var img = new Image();
+
+					img.onload = function() {
+						context.drawImage(this, 0, 0, canvas.width, canvas.height);
+					}
+					img.src = data.payload.base64;
+				}
+			});
+
 		});
 	}else if(!GET.uuid){
 		var conn = meshblu.createConnection({});
@@ -92,6 +119,7 @@ function($scope, $timeout) {
 			data.type = 'device:controlPanel';
 			data.discoverWhitelist = [data.uuid];
 			data.board = initialDash;
+			data.messageSchema = MESSAGE_SCHEMA;
 			data.logo  = "https://s3-us-west-2.amazonaws.com/octoblu-icons/device/astral_plane.svg";
 			conn.update(data);
 			$scope.useURL   = "http://control.octoblu.com/?uuid=" + data.uuid + "&token=" + data.token;
@@ -126,7 +154,7 @@ function($scope, $timeout) {
 .controller('CustomWidgetCtrl', ['$scope', '$modal',
 function($scope, $modal) {
 
-	$scope.astrals = ['slider', 'button', 'switch'];
+	$scope.astrals = ['slider', 'button', 'switch','base64-img'];
 
 	$scope.remove = function(widget) {
 		$scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
