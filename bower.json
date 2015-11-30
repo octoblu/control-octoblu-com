@@ -1,0 +1,22 @@
+{
+  "name": "astral_angular",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "virgilvox <moheeb.zara@citrix.com> (http://app.octoblu.com/)"
+  ],
+  "dependencies": {
+		"angular": ">= 1.2.0",
+		"javascript-detect-element-resize": "sdecima/javascript-detect-element-resize#~0.5.1"
+	},
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
