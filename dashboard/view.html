@@ -4,12 +4,16 @@
 	<md-button class="md-raised md-warn" ng-click="clear()"><i class="glyphicon glyphicon-trash"></i> Clear</md-button>
 	<md-button class="md-raised md-primary" ng-click="saveBoard()"><i class="glyphicon glyphicon-save"></i> Save</md-button>
 
-	<h1 style="display: inline-block; width: 200px;">  Dashboard</h1>
-	<!--	<select class="form-control" style="width: 150px; margin-bottom: 20px; display:inline-block;" ng-change="changeDashboard()" ng-model="selectedDashboardId" ng-options="d.id as d.name for d in dashboards | object2Array | orderBy:'id'"> -->
+	<h1 ng-show="{{!showClaim}}" style="display: inline-block; width: 200px;">  {{deviceName}}</h1>
+	<!--	<select class="form-control" style="width: 150px; margin-bottom: 20px; display:inline-block;" ng-change="changeDashboard()" ng-model="selectedDashboardId" ng-options="d.id as d.name for d in dashboards | object2Array | orderBy:'id'">
 </select>
+-->
 
 </div>
-<div gridster="gridsterOptions">
+<md-button ng-show="{{showClaim}}" class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{claimURL}}">Claim Device</md-button>
+<md-button ng-show="{{showClaim}}" class="md-raised md-warn md-hue-2" target="_blank" ng-href="{{useURL}}">Go here to use!</md-button>
+
+<div ng-show="{{!showClaim}}" gridster="gridsterOptions">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
 			<div class="box" ng-controller="CustomWidgetCtrl">

@@ -4,12 +4,43 @@ angular.module('app')
 function($scope, $timeout) {
 	$scope.gridsterOptions = {
 		margins: [20, 20],
+		mobileBreakPoint: 300,
 		columns: 4,
 		draggable: {
 			handle: 'h3',
 			enabled: false
 		}
 	};
+
+	var initialDash = {
+		id: '1',
+		name: 'Home',
+		widgets: [{
+			col: 0,
+			row: 0,
+			sizeY: 1,
+			sizeX: 1,
+			name: "Widget 1",
+			type: "slider"
+		}, {
+			col: 1,
+			row: 1,
+			sizeY: 1,
+			sizeX: 1,
+			name: "Widget 2",
+			type: "button"
+		},
+		{
+			col: 2,
+			row: 1,
+			sizeY: 1,
+			sizeX: 1,
+			name: "Widget 3",
+			type: "switch"
+		}]
+	};
+
+
 	var GET = {};
 	var query = window.location.search.substring(1).split("&");
 	for (var i = 0, max = query.length; i < max; i++)
@@ -20,68 +51,54 @@ function($scope, $timeout) {
 		GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
 	}
 
-	var conn = meshblu.createConnection({
-		"uuid": GET.uuid,
-		"token": GET.token
-	});
+	if(GET.uuid){
 
-
-	conn.on('ready', function(data){
-		console.log('UUID AUTHENTICATED!');
-		conn.whoami({}, function(result) {
-			$scope.dashboard = result.board;
-			$scope.$apply();
+		var conn = meshblu.createConnection({
+			"uuid": GET.uuid,
+			"token": GET.token
 		});
 
-		$scope.sendMessage = function(name, value) {
+		conn.on('ready', function(data){
+			console.log('UUID AUTHENTICATED!');
+			conn.whoami({}, function(result) {
+				$scope.dashboard = result.board;
+				$scope.showClaim = false;
+				$scope.deviceName = result.name || "Dashboard";
+				$scope.$apply();
+			});
+
+			$scope.sendMessage = function(name, value) {
 				var message = {
 					"devices": "*",
 					"payload": {"name": name, "value": value}
 				};
 				conn.message(message);
 				console.log(message);
-		};
+			};
 
-		$scope.saveBoard = function() {
+			$scope.saveBoard = function() {
 				conn.update({
 					"uuid": GET.uuid,
 					"board": $scope.dashboard
 				});
-			console.log($scope.dashboard);
-		}
+				console.log($scope.dashboard);
+			}
+		});
+	}else if(!GET.uuid){
+		var conn = meshblu.createConnection({});
+		$scope.showClaim = true;
+		conn.on('ready', function(data){
+			console.log('Ready', data);
+			data.type = 'device:ui';
+			data.discoverWhitelist = [data.uuid];
+			data.board = initialDash;
+			conn.update(data);
+			$scope.useURL   = "http://ui.octoblu.com/?uuid=" + data.uuid + "&token=" + data.token;
+			$scope.claimURL = "https://app.octoblu.com/node-wizard/claim/" + data.uuid + "/" + data.token;
+			$scope.$apply();
+		});
+	}
 
-
-	});
-
-	$scope.dashboards = {
-		'1': {
-			id: '1',
-			name: 'Home',
-			widgets: [{
-				col: 0,
-				row: 0,
-				sizeY: 1,
-				sizeX: 1,
-				name: "Widget 1",
-				type: "slider"
-			}, {
-				col: 1,
-				row: 1,
-				sizeY: 1,
-				sizeX: 1,
-				name: "Widget 2",
-				type: "button"
-			},
-			{
-				col: 2,
-				row: 1,
-				sizeY: 1,
-				sizeX: 1,
-				name: "Widget 3",
-				type: "switch"
-			}]
-		}
-	};
 
 	$scope.clear = function() {
 		$scope.dashboard.widgets = [];
