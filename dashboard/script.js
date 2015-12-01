@@ -4,8 +4,8 @@ angular.module('app')
 function($scope, $timeout) {
 	$scope.gridsterOptions = {
 		margins: [20, 20],
-		mobileBreakPoint: 500,
-		columns: 4,
+		mobileBreakPoint: 600,
+		columns: 5,
 		draggable: {
 			handle: 'h3',
 			enabled: false
@@ -73,7 +73,7 @@ function($scope, $timeout) {
 		conn.on('ready', function(data){
 			console.log('UUID AUTHENTICATED!');
 			conn.whoami({}, function(result) {
-				$scope.dashboard = result.board;
+				$scope.dashboard = result.board || initialDash;
 				$scope.showClaim = false;
 				$scope.deviceName = result.name || "Dashboard";
 				$scope.$apply();
@@ -118,7 +118,6 @@ function($scope, $timeout) {
 			console.log('Ready', data);
 			data.type = 'device:controlPanel';
 			data.discoverWhitelist = [data.uuid];
-			data.board = initialDash;
 			data.messageSchema = MESSAGE_SCHEMA;
 			data.logo  = "https://s3-us-west-2.amazonaws.com/octoblu-icons/device/astral_plane.svg";
 			conn.update(data);
