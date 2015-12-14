@@ -1,12 +1,12 @@
 language: shell
 deploy:
-- provider: s3
-  access_key_id: AKIAJH2D5IPIRHYJT5IA
-  secret_access_key: &1
-    secure: "aGphQSFr5GJMTRBnTIx+o1KieCP8VX7Yk+Ny9+C4X/pTGq2gCWVWYNSFUT3j2ztFVMJ9IH9Bkco+R6/unFMOWwX4fO1U0i+i1YrzrXdItZROdldrO+sb+g+MQNM4TiHjv0uRH/9Js3eLSr1lTWanYcUnOUvlALN9YA+b8UcbgZX9OIks/WmdFZe9WPkBScBEGTI+OQwcFWsd0hastlAeZQ7iqoZbO1X6Oay25/TgFs9G/E9JHd3j6VQFzfqtXGrnDavQNFrjOEPRHJRiZOEpR6+0+6d5Inn2pRgU5hGlEK24HPWkvaH5gprfRwRHV2gtrD/wzgB3EuPLoDtb57tje03qR9aLUTDtl9Ki7x0b1vuPXvMccQ7j7thKJCxGnl8hOCOib5O/DLi6A6etJjADyZuw+kWz+IxSi9KeEimxBVOSaBXeLTTMPJsfyErOU5LzE7ZrVVcuK5BwLWYPUygCQUajj/nZ6gddDlzZXTOUgnSQFe4fhkWpxK5VWaERkNiOLalGm/aHsk4mfcQRUj8zSMjV1a5IIJ50WYqhW1tXuS9Q0Nvig+Cv/fupbF7RTyAc5aZXg5wxUfL0HLFypV1EdSQN9V9MXNixlLi+/NaEfPtbtmO58jwDYlmiEKrX/+sMSrlo52cZlsT2kegLqGM/Sen69BTA1qWiKiQFue/li6U="
-  bucket: control.octoblu.com
-  endpoint: control.octoblu.com.s3-website-us-east-1.amazonaws.com
-  region: us-east-1
-  on:
-    branch: master
-
+  matrix:
+  - provider: s3
+    access_key_id: AKIAJH2D5IPIRHYJT5IA
+    secret_access_key:
+      secure: 'X91bmRrBRhMACzXMOfLE6AdW04Fd7VjkO8ONTXOQjJkwQEdmIN5xKPzwpzYVekDt6KGFb5GKojSx5HJ9oTjCPFAWL9hkVynY11xIMxJIT3+DR6fd+O0gLg9CrAAw771qqHsAk/uqFU66JAeBJ42s3YdvXuyvxl4wzMjbBwSdDf2w4iJ93fFcKDfJYFo3GGpyJyJSIiKI2Bi/5eX3xOX2ttBieOvMQXGTyd4S2KbMUdlpEhC3FHNAPot/lqo+6gtHkmqriz5rrF6OOY2Ab/uR4MEA0IXv/rdG25Et9vItHC9x9N/Z94A/m6l1S4qqazRJWwRoM17iR+yUNDtqL1ihYyI8ouhxYLf3t46KZVIr+0e3/NucSqJnsyAAFWSD3+iHOsMSJ77YTg6FL32q4XEQCTydpIBlVD6GGca0dqo6EjCrnfOdbjK+eoIj2d7lRaZMi806HKfhi9WQ1eQorJsbYAC7UevuhgyGw6nwVsa+PSlFItELu/9sh/V6sXk7l9uF2QL/fWoELGrlGEb00et+AMMTiTAXxFj0lg3dEahUNNIofcfqSySkDPaAcB/35iEF9fv9C7mvs1pUnrHEtIixx4vu1yFc9do57m/3Z5M6TwmMshsgTygoCvDCDyLUSieYIviKcgHn+wLdgKB8vYTjFmustzpf6wAqYdSfUutpqkc='
+    bucket: control.octoblu.com
+    endpoint: control.octoblu.com.s3-website-us-east-1.amazonaws.com
+    region: us-east-1
+    on:
+      branch: master
