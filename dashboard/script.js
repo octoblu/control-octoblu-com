@@ -18,7 +18,11 @@ function($scope, $timeout) {
 			"name": {
 				"type": "string"
 			},
-			"base64":{
+			"type":{
+				"type": "string",
+				"enum": ["image", "text"]
+			},
+			"data":{
 				"type": "string"
 			}
 		}
@@ -91,14 +95,27 @@ function($scope, $timeout) {
 			$scope.saveBoard = function() {
 				conn.update({
 					"uuid": GET.uuid,
-					"board": $scope.dashboard
+					"board": $scope.dashboard,
+					"messageSchema": $scope.createSchema()
 				});
 				console.log($scope.dashboard);
 			}
 
+			$scope.createSchema = function(){
+				var newSchema = MESSAGE_SCHEMA;
+				var names = [];
+				$scope.dashboard.widgets.forEach(function(entry) {
+						    if(entry.type == 'displayImage' || entry.type == 'text'){
+									names.push(entry.name);
+								}
+						});
+				newSchema.properties.name.enum = names;
+				return newSchema
+			}
+
 			conn.on('message', function(data){
 				console.log(data.payload.name);
-				if(data.payload.base64){
+				if(data.payload.type == "image"){
 					var canvas = document.getElementById(data.payload.name);
 					var context = canvas.getContext('2d');
 					var img = new Image();
@@ -106,7 +123,10 @@ function($scope, $timeout) {
 					img.onload = function() {
 						context.drawImage(this, 0, 0, canvas.width, canvas.height);
 					}
-					img.src = data.payload.base64;
+					img.src = data.payload.data;
+				}
+				if(data.payload.type == "text"){
+					document.getElementById(data.payload.name).innerHTML = data.payload.data;
 				}
 			});
 
@@ -153,7 +173,7 @@ function($scope, $timeout) {
 .controller('CustomWidgetCtrl', ['$scope', '$modal',
 function($scope, $modal) {
 
-	$scope.astrals = ['slider', 'button', 'switch','base64-img'];
+	$scope.astrals = ['slider', 'button', 'switch','displayImage', 'text'];
 
 	$scope.remove = function(widget) {
 		$scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);

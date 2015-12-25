@@ -69,7 +69,8 @@
 					<md-slider layout-align="center center" ng-if="widget.type == 'slider'" flex ng-model="value" ng-change="sendMessage(widget.name, value)" min="0" max="255" aria-label="blue" id="blue-slider" class="md-primary"></md-slider>
 					<md-button layout-align="center center" ng-style="{'width':'100%', height:'50px'}" ng-if="widget.type == 'button'" ng-mouseup="sendMessage(widget.name, 'up')" ng-mousedown="sendMessage(widget.name, 'down')" class="md-raised md-primary">{{ widget.name }}</md-button>
 					<md-switch layout-align="center center" ng-if="widget.type == 'switch'" ng-click="thevalue = !thevalue; sendMessage(widget.name, thevalue)" aria-label="Switch 1"></md-switch>
-					<canvas    layout-align="center center" ng-if="widget.type == 'base64-img'" id="{{widget.name}}" height="600" width="800"></canvas>
+					<canvas    layout-align="center center" ng-if="widget.type == 'displayImage'" id="{{widget.name}}" height="600" width="800"></canvas>
+					<p ng-if="widget.type == 'text'" id="{{widget.name}}">Hello World!</p>
 				</md-content>
 			</div>
 		</li>
