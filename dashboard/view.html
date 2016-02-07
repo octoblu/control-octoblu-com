@@ -71,8 +71,16 @@
 					<md-switch layout-align="center center" ng-if="widget.type == 'switch'" ng-click="thevalue = !thevalue; sendMessage(widget.name, thevalue)" aria-label="Switch 1"></md-switch>
 					<canvas    layout-align="center center" ng-if="widget.type == 'displayImage'" id="{{widget.name}}" height="600" width="800"></canvas>
 					<p ng-if="widget.type == 'text'" id="{{widget.name}}">Hello World!</p>
-				</md-content>
+
+					<ng-map layout-align="center center" default-style="false" ng-style="{'width':'100%','height': '{{widget.height}}'}" ng-if="widget.type == 'map'" id="{{widget.name}}" center='[{{widget.lat}}, {{widget.lon}}]' refresh="true" zoom="7"></ng-map>
+  			</md-content>
 			</div>
 		</li>
 	</ul>
 </div>
+
+<md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="enableGeo">
+	Send Location every second
+</md-switch>
+
+<md-button class="md-raised md-primary" ng-click="sendGeo()">Send Location</md-button>

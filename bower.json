@@ -6,9 +6,10 @@
     "virgilvox <moheeb.zara@citrix.com> (http://app.octoblu.com/)"
   ],
   "dependencies": {
-		"angular": ">= 1.2.0",
-		"javascript-detect-element-resize": "sdecima/javascript-detect-element-resize#~0.5.1"
-	},
+    "angular": ">= 1.2.0",
+    "javascript-detect-element-resize": "sdecima/javascript-detect-element-resize#~0.5.1",
+    "angular-google-maps": "~2.3.1"
+  },
   "license": "ISC",
   "moduleType": [],
   "homepage": "",

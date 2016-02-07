@@ -1,7 +1,9 @@
 angular.module('app')
+.controller('DashboardCtrl', ['$scope', '$timeout', '$rootScope', 'geolocation',
+function($scope, $timeout, $rootScope, geolocation) {
 
-.controller('DashboardCtrl', ['$scope', '$timeout',
-function($scope, $timeout) {
+
+	$scope.Hmap = [50, -111];
 	$scope.gridsterOptions = {
 		margins: [20, 20],
 		mobileBreakPoint: 600,
@@ -9,7 +11,17 @@ function($scope, $timeout) {
 		draggable: {
 			handle: 'h3',
 			enabled: false
-		}
+		},
+		resizable: {
+       enabled: true,
+       handles: ['se'],
+       resize: function(event, $element, widget) {
+				 if(widget.type == "map"){
+					 var i = _.findLastIndex($scope.dashboard.widgets, { 'name': widget.name});
+  				 $scope.dashboard.widgets[i].height = widget.sizeY * 100 + "px"; 
+				 }
+			 },
+    }
 	};
 
 	var MESSAGE_SCHEMA = {
@@ -20,9 +32,15 @@ function($scope, $timeout) {
 			},
 			"type":{
 				"type": "string",
-				"enum": ["image", "text"]
+				"enum": ["image", "text", "map"]
 			},
 			"data":{
+				"type": "string"
+			},
+			"lat": {
+				"type": "string"
+			},
+			"lon": {
 				"type": "string"
 			}
 		}
@@ -105,7 +123,7 @@ function($scope, $timeout) {
 				var newSchema = MESSAGE_SCHEMA;
 				var names = [];
 				$scope.dashboard.widgets.forEach(function(entry) {
-						    if(entry.type == 'displayImage' || entry.type == 'text'){
+						    if(entry.type == 'displayImage' || entry.type == 'text' || entry.type == "map"){
 									names.push(entry.name);
 								}
 						});
@@ -114,7 +132,7 @@ function($scope, $timeout) {
 			}
 
 			conn.on('message', function(data){
-				console.log(data.payload.name);
+				//console.log(data.payload.name);
 				if(data.payload.type == "image"){
 					var canvas = document.getElementById(data.payload.name);
 					var context = canvas.getContext('2d');
@@ -128,7 +146,55 @@ function($scope, $timeout) {
 				if(data.payload.type == "text"){
 					document.getElementById(data.payload.name).innerHTML = data.payload.data;
 				}
+				if(data.payload.type == "map"){
+
+					var widget = _.findLastIndex($scope.dashboard.widgets, { 'name': data.payload.name});
+
+					$scope.dashboard.widgets[widget].lat = data.payload.lat;
+					$scope.dashboard.widgets[widget].lon = data.payload.lon;
+
+					$scope.$apply();
+				}
 			});
+
+			$scope.sendGeo = function(){
+				geolocation.getLocation().then(function(data){
+						$scope.coords = {lat:data.coords.latitude, long:data.coords.longitude};
+						//console.log($scope.coords);
+
+						var message = {
+							"devices": "*",
+							"payload": {
+								"coords": $scope.coords
+							}
+						};
+
+					//	console.log(message);
+						conn.message(message);
+
+					});
+			}
+
+			setInterval(function(){
+		    if($scope.enableGeo == true){
+		      geolocation.getLocation().then(function(data){
+		          $scope.coords = {lat: data.coords.latitude, lon: data.coords.longitude};
+
+		          var message = {
+		            "devices": "*",
+		            "payload": {
+									"geolocation": {
+										"coords": $scope.coords
+									}
+		            }
+		          };
+
+		          //console.log(message);
+		          conn.message(message);
+		        });
+		    }
+		  }, 3000);
+
 
 		});
 	}else if(!GET.uuid){
@@ -156,7 +222,10 @@ function($scope, $timeout) {
 		$scope.dashboard.widgets.push({
 			name: "New Widget",
 			sizeX: 1,
-			sizeY: 1
+			sizeY: 1,
+			lat: 33,
+			lon: -111,
+			height: "100px"
 		});
 	};
 
@@ -173,7 +242,7 @@ function($scope, $timeout) {
 .controller('CustomWidgetCtrl', ['$scope', '$modal',
 function($scope, $modal) {
 
-	$scope.astrals = ['slider', 'button', 'switch','displayImage', 'text'];
+	$scope.astrals = ['slider', 'button', 'switch','displayImage', 'text', 'map'];
 
 	$scope.remove = function(widget) {
 		$scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
