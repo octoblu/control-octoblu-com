@@ -18,7 +18,7 @@ function($scope, $timeout, $rootScope, geolocation) {
        resize: function(event, $element, widget) {
 				 if(widget.type == "map"){
 					 var i = _.findLastIndex($scope.dashboard.widgets, { 'name': widget.name});
-  				 $scope.dashboard.widgets[i].height = widget.sizeY * 100 + "px"; 
+  				 $scope.dashboard.widgets[i].height = widget.sizeY * 100 + "px";
 				 }
 			 },
     }
@@ -159,7 +159,7 @@ function($scope, $timeout, $rootScope, geolocation) {
 
 			$scope.sendGeo = function(){
 				geolocation.getLocation().then(function(data){
-						$scope.coords = {lat:data.coords.latitude, long:data.coords.longitude};
+						$scope.coords = {lat: data.coords.latitude, lon: data.coords.longitude};
 						//console.log($scope.coords);
 
 						var message = {
