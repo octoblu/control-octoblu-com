@@ -72,7 +72,9 @@
 					<canvas    layout-align="center center" ng-if="widget.type == 'displayImage'" id="{{widget.name}}" height="600" width="800"></canvas>
 					<p ng-if="widget.type == 'text'" id="{{widget.name}}">Hello World!</p>
 
-					<ng-map layout-align="center center" default-style="false" ng-style="{'width':'100%','height': '{{widget.height}}'}" ng-if="widget.type == 'map'" id="{{widget.name}}" center='[{{widget.lat}}, {{widget.lon}}]' refresh="true" zoom="7"></ng-map>
+					<ng-map layout-align="center center" default-style="false" ng-style="{'width':'100%','height': '{{widget.height}}'}" ng-if="widget.type == 'map'" id="{{widget.name}}" center='[{{widget.lat}}, {{widget.lon}}]' refresh="true" zoom="9">
+ 						<marker position='[{{widget.lat}}, {{widget.lon}}]'></marker>
+					</ng-map>
   			</md-content>
 			</div>
 		</li>

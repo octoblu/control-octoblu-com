@@ -20,7 +20,7 @@ function($scope, $timeout, $rootScope, geolocation) {
 					 var i = _.findLastIndex($scope.dashboard.widgets, { 'name': widget.name});
   				 $scope.dashboard.widgets[i].height = widget.sizeY * 100 + "px";
 				 }
-			 },
+			 }
     }
 	};
 
@@ -165,7 +165,9 @@ function($scope, $timeout, $rootScope, geolocation) {
 						var message = {
 							"devices": "*",
 							"payload": {
-								"coords": $scope.coords
+								"geolocation": {
+									"coords": $scope.coords
+								}
 							}
 						};
 
